@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useContext } from "react";
-import { UserContext } from "../../contexts/userProviderSimple";
+import { UserContext } from "../contexts/userProviderSimple";
 import { useNavigate } from "react-router-dom";
 import {
   Stack,
@@ -17,8 +17,8 @@ import {
   MenuList,
 } from "@mui/material";
 import LocalFloristIcon from "@mui/icons-material/LocalFlorist";
-import { ListOverviewContext } from '../../contexts/listOverview.provider';
-import { ListDetailContext } from "../../contexts/listDetail.provider";
+import { ListOverviewContext } from '../contexts/listOverview.provider';
+import { ListDetailContext } from "../contexts/listDetail.provider";
 
 export default function Header() {
   const { userList, loggedInUser, setLoggedInUser ,setLgu} = useContext(UserContext);

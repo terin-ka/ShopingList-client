@@ -1,9 +1,9 @@
 import api from "./api";
 
-async function getAllLists(userId) {
+export async function getAllLists(userId) {
   try {
     let response = await api.get("list/getAll", {
-      headers: { user_id: userId }, // Přidám hlavičku s userId
+      headers: { user_id: userId },
     });
     return response.data;
   } catch (error) {
@@ -11,7 +11,7 @@ async function getAllLists(userId) {
   }
 };
 
-async function getArchivedLists(userId) {
+export async function getArchivedLists(userId) {
   try {
     let response = await api.get("list/getArchived", {
       headers: { user_id: userId }, 
@@ -22,10 +22,19 @@ async function getArchivedLists(userId) {
   }
 };
 
-async function createList(userId, listName) {
+export async function getList(userId, listId) {
   try {
-    console.log("Axios Request Body:", { listName });
-    console.log("Axios Headers:", { user_id: userId });
+    let response = await api.get(`list/getList/${listId}`, {
+      headers: { user_id: userId }, 
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message ?? error.message);
+  }
+};
+
+export async function createList(userId, listName) {
+  try {
     let response = await api.post("list/create", {
       listName,
     }, {
@@ -38,10 +47,16 @@ async function createList(userId, listName) {
   }
 };
 
-const ListService = {
-  getAllLists,
-  getArchivedLists,
-  createList,
+export async function deleteList(userId, listId) {
+  try {
+    let response = await api.delete(`list/delete/${listId}`, 
+    {
+      headers: { user_id: userId }, 
+    });
+
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message ?? error.message);
+  }
 };
 
-export default ListService;

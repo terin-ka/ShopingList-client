@@ -11,12 +11,16 @@ import { toast } from "react-toastify";
 // globální onError callback
 // https://tkdodo.eu/blog/react-query-error-handling#the-global-callbacks
 const queryClient = new QueryClient({
-  queryCache: new QueryCache({
-    onError: (error) => {
-      toast.error(error.message);
-      console.error(error);
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minut pro "stale" data
+      cacheTime: 1000 * 60 * 10, // 10 minut po uložení v cache
+      refetchOnWindowFocus: false, // Zabránění refetch při znovu zaměření okna
+      onError: (error) => {
+        toast.error(`Error: ${error.message}`); // Globální chybový toast
+      },
     },
-  }),
+  },
 });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -33,6 +37,3 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
-
-// <React.StrictMode>
-// </React.StrictMode>

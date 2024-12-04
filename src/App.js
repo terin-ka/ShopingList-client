@@ -6,7 +6,7 @@ import ListDetailProvider from "./contexts/listDetail.provider";
 import UserProviderSimple from "./contexts/userProviderSimple";
 import ListOverwievProvider from "./contexts/listOverview.provider";
 import CustomThemeProvider from "./contexts/themeProvider";
-import Header from "./components/listDetail/Header";
+import Header from "./components/Header";
 import Overview from "./components/overview/Overview";
 import ListDetail from "./components/listDetail/ListDetail";
 
@@ -23,7 +23,7 @@ export default function App() {
                 <Routes>
                   <Route path="/" element={<Test />} />
                   <Route path="/overview" element={<Overview />} />
-                  <Route path="listDetail/:id" element={<ListDetail />} />
+                  <Route path="listDetail/:listId" element={<ListDetail />} />
                   <Route path="/test" element={<Test />} />
                 </Routes>
               </ListDetailProvider>

@@ -1,10 +1,10 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { useListData } from "../../hooks/list.hooks";
 import { ListOverviewContext } from "../../contexts/listOverview.provider";
-import { ListDetailContext } from "../../contexts/listDetail.provider";
 import { UserContext } from "../../contexts/userProviderSimple";
 import ArchiveButton from "./ArchiveButton";
-import DeleteButton from "../listDetail/DeleteButton";
+import DeleteListButton from "./DeleteListButton";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import {
   Card,
@@ -20,14 +20,12 @@ import {
 export default function ShoppingList({ list }) {
   const navigate = useNavigate();
   //const { setListData } = useContext(ListDetailContext);
-  const { handlerMap } = useContext(ListOverviewContext);
   const { userList, loggedInUser } = useContext(UserContext);
   const maxVisibleItems = 3;
   const ownerName = Array.isArray(userList) && userList.find((user) => user._id === list.owner)?.name || "Unknown Owner";
   //const ownerName = userList.find((user) => user._id === list.owner)?.name || "Unknown Owner";
 
   const handleNavigateToDetail = () => {
-    //setListData(list);
     navigate(`/listDetail/${list._id}`);
   };
 
@@ -64,16 +62,15 @@ export default function ShoppingList({ list }) {
           </Typography>
         )}
       </CardContent>
-      {loggedInUser?.id === list.owner ? (
+      {loggedInUser?._id === list.owner ? (
         <CardActions
           sx={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
         >
           <ArchiveButton itemId={list._id} />
-          <DeleteButton
-            itemId={list._id}
-            handleDelete={handlerMap.handleDeleteList}
+          <DeleteListButton
+            listId={list._id}
           />
-          <Tooltip title="show list detail">
+          <Tooltip title="Show list detail">
             <IconButton color="primary" onClick={handleNavigateToDetail}>
               <VisibilityOutlinedIcon />
             </IconButton>

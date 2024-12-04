@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import { UserContext } from "../../contexts/userProviderSimple";
-import { useMutation } from "@tanstack/react-query";
-import ListService from "../../services/list.service";
+import { useCreateList } from "../../hooks/list.hooks";
 import AddIcon from "@mui/icons-material/Add";
 import {
   Button,
@@ -14,26 +13,11 @@ import {
 } from "@mui/material";
 
 export default function AddListButton() {
-  
-  const {loggedInUser} = useContext(UserContext);
+  const { loggedInUser } = useContext(UserContext);
   const [open, setOpen] = useState(false);
   const [listName, setListName] = useState("");
-  //const owner = loggedInUser?._id;
-  //const { handlerMap } = useContext(ListOverviewContext);
 
-  const mutation = useMutation({
-    mutationFn: async ({ userId, listName }) => {
-      const response = await ListService.createList(userId, listName);
-      return response;
-    },
-    onSuccess: (data) => {
-      console.log("List created successfully:", data);
-      handleClose(); // Zavřete dialog
-    },
-    onError: (error) => {
-      console.error("Error creating list:", error);
-    },
-  });
+  const { mutate: createNewList, isLoading } = useCreateList();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -41,12 +25,17 @@ export default function AddListButton() {
 
   const handleClose = () => {
     setOpen(false);
+    setListName("");
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    mutation.mutate({ userId: loggedInUser?._id, listName });
-    setListName(""); // Vymaže pole po uložení
+    createNewList(
+      { userId: loggedInUser?._id, listName },
+      {
+        onSuccess: () => handleClose(),
+      }
+    );
   };
 
   return (
@@ -78,10 +67,10 @@ export default function AddListButton() {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="secondary">
+          <Button onClick={handleClose} color="secondary" disabled={isLoading}>
             Cancel
           </Button>
-          <Button type="submit">Confirm</Button>
+          <Button type="submit" disabled={isLoading}>Confirm</Button>
         </DialogActions>
       </Dialog>
     </Stack>

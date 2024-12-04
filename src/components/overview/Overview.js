@@ -14,11 +14,6 @@ export default function Overview() {
       <Typography variant="h2">Nejprve se prosím přihlaste</Typography>
     </Grid2>;
 
-  /*const filteredList = overviewData.filter(
-    (list) =>
-      list.owner === loggedInUser.id ||
-      list.memberList.includes(loggedInUser.id)
-  );*/
 
   return (
     <Stack direction="column" alignItems="center">
