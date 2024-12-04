@@ -19,16 +19,16 @@ import {
 
 export default function ShoppingList({ list }) {
   const navigate = useNavigate();
-  const { setListData } = useContext(ListDetailContext);
+  //const { setListData } = useContext(ListDetailContext);
   const { handlerMap } = useContext(ListOverviewContext);
   const { userList, loggedInUser } = useContext(UserContext);
   const maxVisibleItems = 3;
-  const ownerName =
-    userList.find((user) => user.id === list.owner)?.name || "Unknown Owner";
+  const ownerName = Array.isArray(userList) && userList.find((user) => user._id === list.owner)?.name || "Unknown Owner";
+  //const ownerName = userList.find((user) => user._id === list.owner)?.name || "Unknown Owner";
 
   const handleNavigateToDetail = () => {
-    setListData(list);
-    navigate(`/listDetail/${list.listId}`);
+    //setListData(list);
+    navigate(`/listDetail/${list._id}`);
   };
 
   return (
@@ -47,15 +47,15 @@ export default function ShoppingList({ list }) {
           gutterBottom
           sx={{ overflow: "hidden", textOverflow: "ellipsis" }}
         >
-          {list.name}
+          {list.listName}
         </Typography>
         {list.itemList.slice(0, maxVisibleItems).map((item) => (
           <Typography
-            key={item.id}
+            key={item.itemId}
             variant="body1"
             sx={{ overflow: "hidden", textOverflow: "ellipsis" }}
           >
-            • {item.name}
+            • {item.itemName}
           </Typography>
         ))}
         {list.itemList.length > maxVisibleItems && (
@@ -68,9 +68,9 @@ export default function ShoppingList({ list }) {
         <CardActions
           sx={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
         >
-          <ArchiveButton itemId={list.listId} />
+          <ArchiveButton itemId={list._id} />
           <DeleteButton
-            itemId={list.listId}
+            itemId={list._id}
             handleDelete={handlerMap.handleDeleteList}
           />
           <Tooltip title="show list detail">

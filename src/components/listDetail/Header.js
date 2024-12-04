@@ -21,20 +21,20 @@ import { ListOverviewContext } from '../../contexts/listOverview.provider';
 import { ListDetailContext } from "../../contexts/listDetail.provider";
 
 export default function Header() {
-  const { userList, loggedInUser, setLoggedInUser } = useContext(UserContext);
+  const { userList, loggedInUser, setLoggedInUser ,setLgu} = useContext(UserContext);
   const { listDetailData } = useContext(ListDetailContext);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
 
-  const { overviewData, setOverviewData } = useContext(ListOverviewContext);
+  /*const { overviewData, setOverviewData } = useContext(ListOverviewContext);
 
   const handleSaveChanges = () => {
     const updatedData = overviewData.map((list) =>
       list.listId === listDetailData.listId ? { ...list, ...listDetailData } : list
     );
     setOverviewData(updatedData);
-  };
+  };*/
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -44,7 +44,6 @@ export default function Header() {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return;
     }
-
     setOpen(false);
   };
 
@@ -70,7 +69,7 @@ export default function Header() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <Stack onClick={() => {handleSaveChanges();navigate(`/overview`);}} direction="row" alignItems="center">
+          <Stack onClick={() => {navigate(`/overview`);}} direction="row" alignItems="center">
             <LocalFloristIcon sx={{ display: { md: "flex" }, mr: 1 }} />
             <Typography
               variant="h6"
@@ -132,9 +131,9 @@ export default function Header() {
                     >
                       {userList.map((user) => (
                         <MenuItem
-                          key={user.id}
+                          key={user._id}
                           onClick={(event) => {
-                            setLoggedInUser({ id: user?.id, name: user?.name });
+                            setLoggedInUser({ _id: user?._id, name: user?.name });
                             handleClose(event);
                           }}
                         >

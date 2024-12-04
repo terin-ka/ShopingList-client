@@ -7,7 +7,7 @@ export default function OverviewFilterButton() {
 
   return (
     <Stack spacing={2} direction="row">
-      <Button variant="outlined" sx={{ color: "#56949F" }}>
+      <Button variant="outlined">
         {showArchived ? "Archived" : "All"}
         <Switch checked={showArchived} onChange={() => toggleShowArchived()} />
       </Button>

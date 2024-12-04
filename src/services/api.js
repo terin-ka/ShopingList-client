@@ -14,7 +14,7 @@ const instance = axios.create({
 });
 
 /*pomocí interceptor načteme uložený autorizační token*/
-const getLocalAccessToken = () => {
+/*const getLocalAccessToken = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   return user?.sessionid;
 };
@@ -30,7 +30,7 @@ instance.interceptors.request.use(
   (error) => {
     return Promise.reject(error);
   }
-);
+);*/
 
 /*
 instance.interceptors.response.use(

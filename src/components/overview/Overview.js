@@ -14,18 +14,18 @@ export default function Overview() {
       <Typography variant="h2">Nejprve se prosím přihlaste</Typography>
     </Grid2>;
 
-  const filteredList = overviewData.filter(
+  /*const filteredList = overviewData.filter(
     (list) =>
       list.owner === loggedInUser.id ||
       list.memberList.includes(loggedInUser.id)
-  );
+  );*/
 
   return (
     <Stack direction="column" alignItems="center">
       <OverviewToolbar />
       <Grid2 container spacing={4} justifyContent="center">
-        {filteredList.map((list) => (
-          <ShoppingList key={list.listId} list={list} />
+        {overviewData.map((list) => (
+          <ShoppingList key={list._id} list={list} />
         ))}
       </Grid2>
     </Stack>

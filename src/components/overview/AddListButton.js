@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
-import { ListOverviewContext } from "../../contexts/listOverview.provider";
 import { UserContext } from "../../contexts/userProviderSimple";
+import { useMutation } from "@tanstack/react-query";
+import ListService from "../../services/list.service";
 import AddIcon from "@mui/icons-material/Add";
 import {
   Button,
@@ -13,12 +14,26 @@ import {
 } from "@mui/material";
 
 export default function AddListButton() {
-  const { handlerMap } = useContext(ListOverviewContext);
+  
   const {loggedInUser} = useContext(UserContext);
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState("");
-  const owner = loggedInUser?.id;
-  
+  const [listName, setListName] = useState("");
+  //const owner = loggedInUser?._id;
+  //const { handlerMap } = useContext(ListOverviewContext);
+
+  const mutation = useMutation({
+    mutationFn: async ({ userId, listName }) => {
+      const response = await ListService.createList(userId, listName);
+      return response;
+    },
+    onSuccess: (data) => {
+      console.log("List created successfully:", data);
+      handleClose(); // Zavřete dialog
+    },
+    onError: (error) => {
+      console.error("Error creating list:", error);
+    },
+  });
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -30,9 +45,8 @@ export default function AddListButton() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    handlerMap.handleCreateList({ name, owner });
-    setName(""); //Vymaže pole po uložení
-    handleClose();
+    mutation.mutate({ userId: loggedInUser?._id, listName });
+    setListName(""); // Vymaže pole po uložení
   };
 
   return (
@@ -59,8 +73,8 @@ export default function AddListButton() {
             type="text"
             fullWidth
             variant="outlined"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={listName}
+            onChange={(e) => setListName(e.target.value)}
           />
         </DialogContent>
         <DialogActions>

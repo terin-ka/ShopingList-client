@@ -34,22 +34,3 @@ export default function App() {
     </Container>
   );
 }
-
-/*
-//import PrivateRoute from "./components/private-route.component";
-//import ApiProvider from "./contexts/api.provider";
-//import { ToastContainer } from "react-toastify";
-//import "react-toastify/dist/ReactToastify.css";
-//import UserProvider from "./contexts/user.provider";
-//import Header from "./components/header.component";
-//import Login from "./pages/login.page";
-//import LoginRedirect from "./pages/login-redirect.page";
-//import Register from "./pages/register.page";
-//import Profile from "./pages/profile.page";
-<Route path="/login" element={<Login />} />
-<Route path="/loginredirect" element={<LoginRedirect />}/>
-<Route path="/register" element={<Register />} />
-<Route path="/profile" element={<Profile />} />
-
-<ToastContainer position="bottom-center" theme="colored" draggable />
-*/
