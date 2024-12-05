@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { UserContext } from "../../contexts/userProviderSimple";
-import { useCreateList } from "../../hooks/list.hooks";
+import { useCreateList } from "../../hooks/listOverview.hooks";
 import AddIcon from "@mui/icons-material/Add";
 import {
   Button,
@@ -17,7 +17,7 @@ export default function AddListButton() {
   const [open, setOpen] = useState(false);
   const [listName, setListName] = useState("");
 
-  const { mutate: createNewList, isLoading } = useCreateList();
+  const { mutate: createNewList, isPending } = useCreateList();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -67,10 +67,10 @@ export default function AddListButton() {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="secondary" disabled={isLoading}>
+          <Button onClick={handleClose} color="secondary" disabled={isPending}>
             Cancel
           </Button>
-          <Button type="submit" disabled={isLoading}>Confirm</Button>
+          <Button type="submit" disabled={isPending}>Confirm</Button>
         </DialogActions>
       </Dialog>
     </Stack>

@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useListData } from "../../hooks/list.hooks";
+import { useListData } from "../../hooks/listOverview.hooks";
 import { useContext } from "react";
 import { UserContext } from "../../contexts/userProviderSimple";
 import { ListDetailContext } from "../../contexts/listDetail.provider";

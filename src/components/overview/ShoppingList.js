@@ -1,7 +1,5 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { useListData } from "../../hooks/list.hooks";
-import { ListOverviewContext } from "../../contexts/listOverview.provider";
 import { UserContext } from "../../contexts/userProviderSimple";
 import ArchiveButton from "./ArchiveButton";
 import DeleteListButton from "./DeleteListButton";
@@ -19,11 +17,9 @@ import {
 
 export default function ShoppingList({ list }) {
   const navigate = useNavigate();
-  //const { setListData } = useContext(ListDetailContext);
   const { userList, loggedInUser } = useContext(UserContext);
   const maxVisibleItems = 3;
   const ownerName = Array.isArray(userList) && userList.find((user) => user._id === list.owner)?.name || "Unknown Owner";
-  //const ownerName = userList.find((user) => user._id === list.owner)?.name || "Unknown Owner";
 
   const handleNavigateToDetail = () => {
     navigate(`/listDetail/${list._id}`);
@@ -66,7 +62,7 @@ export default function ShoppingList({ list }) {
         <CardActions
           sx={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
         >
-          <ArchiveButton itemId={list._id} />
+          <ArchiveButton listId={list._id} isArchived={list.isArchived}/>
           <DeleteListButton
             listId={list._id}
           />

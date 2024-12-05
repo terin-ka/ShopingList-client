@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getAllLists, getArchivedLists, createList, deleteList, getList } from "../services/list.service";
+import { getAllLists, getArchivedLists, createList, deleteList, getList, toggleArchive } from "../services/list.service";
 
 export function useListOverviewData(userId, showArchived) {
   const fetchListOverviewData = async () => {
@@ -16,8 +16,28 @@ export function useListOverviewData(userId, showArchived) {
   });
 }
 
+export function useToggleArchive() {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: async ({ userId, listId }) => {
+      return await toggleArchive(userId, listId);
+    },
+    onSuccess: (data) => {
+      console.log("List successfully toggled:", data);
+      queryClient.invalidateQueries(["listsOverview"]);
+    },
+    onError: (error) => {
+      console.error("Error toggle archive: ", error.message);
+    },
+  });
+}
+
 export function useListData(userId, listId) {
   const fetchListData = async () => {
+    if (!userId || !listId) {
+      throw new Error("Missing userId or listName");
+    }
     return await getList(userId, listId);
   };
 
