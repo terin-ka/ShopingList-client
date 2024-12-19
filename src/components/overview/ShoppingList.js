@@ -1,6 +1,7 @@
-import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { useContext, useEffect } from "react";
 import { UserContext } from "../../contexts/userProviderSimple";
+//import { ListOverviewContext } from "../../contexts/listOverview.provider";
 import ArchiveButton from "./ArchiveButton";
 import DeleteListButton from "./DeleteListButton";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
@@ -18,12 +19,25 @@ import {
 export default function ShoppingList({ list }) {
   const navigate = useNavigate();
   const { userList, loggedInUser } = useContext(UserContext);
+  //const { setActiveDetail, listDetailData } = useContext(ListOverviewContext);
   const maxVisibleItems = 3;
   const ownerName = Array.isArray(userList) && userList.find((user) => user._id === list.owner)?.name || "Unknown Owner";
 
   const handleNavigateToDetail = () => {
+    //setActiveDetail(list?._id);
     navigate(`/listDetail/${list._id}`);
   };
+
+  /*const handleNavigateToDetail = () => {
+    setActiveDetail(list?._id)
+    //navigate(`/listDetail/${list._id}`);
+  };
+
+  useEffect(() => {
+    if (listDetailData) {
+        navigate(`/listDetail/${listDetailData._id}`);
+    }
+}, [listDetailData, navigate]);*/
 
   return (
     <Card

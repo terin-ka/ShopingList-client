@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import { ListDetailContext } from "../../contexts/listDetail.provider";
+import { ListOverviewContext } from "../../contexts/listOverview.provider";
 import { UserContext } from "../../contexts/userProviderSimple";
 import { Stack, IconButton, Typography, Tooltip } from "@mui/material";
 import { Button, TextField, DialogActions, DialogContent, DialogTitle, Dialog} from "@mui/material";
@@ -8,7 +9,8 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 
 export default function ListName() {
-  const { listDetailData, handlerMap } = useContext(ListDetailContext);
+  const { handlerMap } = useContext(ListDetailContext);
+  const { listDetailData } = useContext(ListOverviewContext);
   const { loggedInUser } = useContext(UserContext);
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -59,9 +61,9 @@ export default function ListName() {
           </Button>
         </DialogActions>
     </Dialog>
-      <Typography variant={isSmallScreen ? "h2" : "h1"}>{listDetailData.name}</Typography>
+      <Typography variant={isSmallScreen ? "h2" : "h1"}>{listDetailData.listName}</Typography>
 
-      {loggedInUser?.id === listDetailData.owner ? (
+      {loggedInUser?._id === listDetailData.owner ? (
         <Tooltip title="Rename" placement="right">
           <IconButton color="primary" onClick={() => setOpen(true)}>
             <EditIcon fontSize="large" />

@@ -6,14 +6,16 @@ import OverviewToolbar from "./OverviewToolbar";
 import ShoppingList from "./ShoppingList";
 
 export default function Overview() {
-  const { overviewData } = useContext(ListOverviewContext);
+  const { overviewData, isLoading, isError } = useContext(ListOverviewContext);
   const { loggedInUser } = useContext(UserContext);
 
-  if (!loggedInUser)
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Error loading lists.</p>;
+
+  if (!loggedInUser || !overviewData)
     return <Grid2 container justifyContent="center">
       <Typography variant="h2">Nejprve se prosím přihlaste</Typography>
     </Grid2>;
-
 
   return (
     <Stack direction="column" alignItems="center">

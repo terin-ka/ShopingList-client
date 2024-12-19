@@ -15,26 +15,18 @@ import {
   Popper,
   MenuItem,
   MenuList,
+  CircularProgress,
 } from "@mui/material";
 import LocalFloristIcon from "@mui/icons-material/LocalFlorist";
 import { ListOverviewContext } from '../contexts/listOverview.provider';
 import { ListDetailContext } from "../contexts/listDetail.provider";
 
 export default function Header() {
-  const { userList, loggedInUser, setLoggedInUser ,setLgu} = useContext(UserContext);
+  const { userList, loggedInUser, setLoggedInUser , isLoading, isError} = useContext(UserContext);
   const { listDetailData } = useContext(ListDetailContext);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
-
-  /*const { overviewData, setOverviewData } = useContext(ListOverviewContext);
-
-  const handleSaveChanges = () => {
-    const updatedData = overviewData.map((list) =>
-      list.listId === listDetailData.listId ? { ...list, ...listDetailData } : list
-    );
-    setOverviewData(updatedData);
-  };*/
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -64,6 +56,13 @@ export default function Header() {
 
     prevOpen.current = open;
   }, [open]);
+
+  if (isLoading) {
+    return <CircularProgress />;
+  }
+  if (isError) {
+    return <Typography color="error">Chyba při načítání seznamu.</Typography>;
+  }
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -103,7 +102,7 @@ export default function Header() {
             onClick={handleToggle}
           >
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              {loggedInUser ? loggedInUser.name : "LOGIN"}
+              {loggedInUser ? loggedInUser.name : "LOGIN" }
             </Typography>
           </Button>
           <Popper
@@ -133,6 +132,7 @@ export default function Header() {
                         <MenuItem
                           key={user._id}
                           onClick={(event) => {
+                            localStorage.setItem("loggedInUser", JSON.stringify({ _id: user._id, name: user.name }));
                             setLoggedInUser({ _id: user?._id, name: user?.name });
                             handleClose(event);
                           }}

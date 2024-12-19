@@ -9,7 +9,7 @@ import {
   Button,
 } from "@mui/material";
 
-export default function DeleteButton({ itemId, handleDelete }) {
+export default function DeleteButton({ itemId, userId, listId, handleDelete }) {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -42,7 +42,7 @@ export default function DeleteButton({ itemId, handleDelete }) {
             color="primary"
             onClick={() => {
               handleClose();
-              handleDelete({ id: itemId });
+              handleDelete({ userId: userId, listId: listId, memberId: itemId });
             }}
           >
             Ano

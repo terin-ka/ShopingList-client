@@ -6,7 +6,8 @@ export function useListOverviewData(userId, showArchived) {
     if (showArchived) {
       return await getArchivedLists(userId);
     }
-    return await getAllLists(userId);
+    const row = await getAllLists(userId);
+    return row;
   };
 
   return useQuery({

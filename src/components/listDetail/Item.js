@@ -22,15 +22,15 @@ export default function Item({ item }) {
         variant="body1"
         sx={{ overflow: "hidden", textOverflow: "ellipsis" }}
       >
-        {item.name}
+        {item.itemName}
       </Typography>
       <Stack direction="row">
         <Typography variant="body1" sx={{ margin: "5px", padding: "5px" }}>
           {item.count}x
         </Typography>
-        <CheckButton itemId={item.id} />
+        <CheckButton itemId={item.itemId} />
         <DeleteButton
-          itemId={item.id}
+          itemId={item.itemId}
           handleDelete={handlerMap.handleDeleteItem}
         />
       </Stack>

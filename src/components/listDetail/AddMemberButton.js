@@ -1,6 +1,8 @@
 import { UserContext } from "../../contexts/userProviderSimple";
 import { ListDetailContext } from "../../contexts/listDetail.provider";
+import { ListOverviewContext } from "../../contexts/listOverview.provider";
 import { useState, useContext } from "react";
+import { useAddMember } from "../../hooks/listDeatil.hooks";
 import AddIcon from "@mui/icons-material/Add";
 import {
   Stack,
@@ -14,12 +16,14 @@ import {
 } from "@mui/material";
 
 export default function AddMemberButton() {
-  const { listDetailData, handlerMap } = useContext(ListDetailContext);
-  const { userList } = useContext(UserContext);
+  const { handlerMap } = useContext(ListDetailContext);
+  const { listDetailData } = useContext(ListOverviewContext);
+  const { userList, loggedInUser } = useContext(UserContext);
   const [memberId, setMemberId] = useState("");
   const [open, setOpen] = useState(false);
 
-  const newUserList = userList.filter((user) => user.id !== listDetailData.owner);
+  const { mutate: addMember, isPending } = useAddMember();
+  const newUserList = userList.filter((user) => user._id !== listDetailData.owner);
 
   const handleClose = () => {
     setOpen(false);
@@ -28,7 +32,7 @@ export default function AddMemberButton() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (memberId) {
-      handlerMap.handleAddMember({ id: memberId });
+      addMember({ userId: loggedInUser?._id, listId: listDetailData?._id, memberId: memberId });
       handleClose();
     }
   };
@@ -53,7 +57,7 @@ export default function AddMemberButton() {
             options={newUserList}
             getOptionLabel={(option) => option.name}
             onChange={(event, newValue) => {
-              setMemberId(newValue ? newValue.id : "");
+              setMemberId(newValue ? newValue._id : "");
             }}
             renderInput={(params) => <TextField {...params} label="User" />}
           />
@@ -62,7 +66,7 @@ export default function AddMemberButton() {
           <Button onClick={handleClose} color="secondary">
             Close
           </Button>
-          <Button type="submit" color="primary" disabled={!memberId}>
+          <Button type="submit" color="primary" disabled={!memberId || isPending}>
             Save Changes
           </Button>
         </DialogActions>
