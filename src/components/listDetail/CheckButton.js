@@ -1,13 +1,16 @@
 import { useState, useEffect, useContext } from "react";
-import { ListDetailContext } from "../../contexts/listDetail.provider";
+import { UserContext } from "../../contexts/userProvider";
 import { ListOverviewContext } from "../../contexts/listOverview.provider";
 import Checkbox from "@mui/material/Checkbox";
+import { useToggleResolveItem } from "../../hooks/listDeatil.hooks";
 
 export default function CheckButton({ itemId }) {
-  const { handlerMap } = useContext(ListDetailContext);
+  const { loggedInUser} = useContext(UserContext);
   const { listDetailData } = useContext(ListOverviewContext);
   const [checked, setChecked] = useState(false);
   const item = listDetailData.itemList.find((item) => item.itemId === itemId);
+
+  const { mutate: toggleResolveItem, isPending } = useToggleResolveItem();
 
   useEffect(() => {
     if (item) {
@@ -17,7 +20,7 @@ export default function CheckButton({ itemId }) {
 
   const handleChange = (event) => {
     setChecked(event.target.checked);
-    handlerMap.toggleResolveItem({ id: itemId });
+    toggleResolveItem({ userId: loggedInUser?._id, listId: listDetailData?._id, itemId: itemId });
   };
 
   return (
@@ -25,6 +28,7 @@ export default function CheckButton({ itemId }) {
       checked={checked}
       onChange={handleChange}
       inputProps={{ "aria-label": "controlled" }}
+      disabled={isPending}
     />
   );
 }

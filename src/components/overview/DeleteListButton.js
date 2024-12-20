@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { UserContext } from "../../contexts/userProviderSimple";
+import { UserContext } from "../../contexts/userProvider";
 import { useDeleteList } from "../../hooks/listOverview.hooks";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
@@ -14,9 +14,10 @@ import {
 export default function DeleteListButton({ listId }) {
   const { loggedInUser } = useContext(UserContext);
   const [open, setOpen] = useState(false);
+
   const { mutate: deleteList, isPending } = useDeleteList();
 
-  const handleClickOpen = () => {
+  const handleOpen = () => {
     setOpen(true);
   };
 
@@ -40,7 +41,7 @@ export default function DeleteListButton({ listId }) {
         <IconButton
           color="primary"
           onClick={() => {
-            handleClickOpen();
+            handleOpen();
           }}
         >
           <DeleteIcon />

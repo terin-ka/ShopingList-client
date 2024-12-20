@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, useContext } from "react";
-import { UserContext } from "./userProviderSimple";
+import { UserContext } from "./userProvider";
 import { useListOverviewData } from "../hooks/listOverview.hooks";
 import { useListData } from "../hooks/listOverview.hooks";
 
@@ -9,17 +9,10 @@ function ListOverviewProvider({ children }) {
   const { loggedInUser } = useContext(UserContext);
   const [showArchived, setShowArchived] = useState(false);
   const [activeDetail, setActiveDetail] = useState(localStorage.getItem("activeDetail"));
-  //const [listDetailData, setListDetailData] = useState(null);
+  const [showUnresolvedItems, setShowUnresolvedItems] = useState(false);
 
   const { data: listOverviewData, isLoading, isError } = useListOverviewData(loggedInUser?._id, showArchived);
   const { data: listDetailData, isLoading: DetailIsLoading, isError: DetailIsError } = useListData(loggedInUser?._id, activeDetail)
-
- /* useEffect(() => {
-    if(activeDetail){
-      const result = listOverviewData.find(list => list?._id === activeDetail);
-      setListDetailData(result);
-    }
-  }, [activeDetail])*/
 
   const value = {
     overviewData: listOverviewData,
@@ -32,6 +25,8 @@ function ListOverviewProvider({ children }) {
     setActiveDetail,
     showArchived,
     toggleShowArchived: () => setShowArchived((current) => !current),
+    showUnresolvedItems,
+    setShowUnresolvedItems,
   };
 
   return (

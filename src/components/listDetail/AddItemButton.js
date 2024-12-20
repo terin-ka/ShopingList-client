@@ -1,5 +1,7 @@
 import { useContext, useState } from "react";
-import { ListDetailContext } from "../../contexts/listDetail.provider";
+import { UserContext } from "../../contexts/userProvider";
+import { ListOverviewContext } from "../../contexts/listOverview.provider";
+import { useCreateItem } from "../../hooks/listDeatil.hooks";
 import AddIcon from "@mui/icons-material/Add";
 import {
   Stack,
@@ -12,11 +14,17 @@ import {
 } from "@mui/material";
 
 export default function AddItemButton() {
-  const { handlerMap } = useContext(ListDetailContext);
+  const { listDetailData } = useContext(ListOverviewContext);
+  const { loggedInUser } = useContext(UserContext);
   const [open, setOpen] = useState(false);
-
   const [name, setName] = useState("");
   const [count, setCount] = useState("");
+
+  const { mutate: createItem, isPending} = useCreateItem();
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
   const handleClose = () => {
     setOpen(false);
@@ -24,11 +32,13 @@ export default function AddItemButton() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    handlerMap.handleCreateItem({
-      name,
+    createItem({
+      userId: loggedInUser?._id,
+      listId: listDetailData?._id,
+      name: name,
       count: count ? parseInt(count, 10) : 1,
     });
-    setName(""); //Vymaže pole po uložení
+    setName("");
     setCount("");
     handleClose();
   };
@@ -78,7 +88,7 @@ export default function AddItemButton() {
         </DialogActions>
       </Dialog>
       <Stack spacing={2} direction="row">
-        <Button variant="outlined" onClick={() => setOpen(true)}>
+        <Button variant="outlined" onClick={handleOpen}>
           Add Item
           <AddIcon />
         </Button>

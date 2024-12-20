@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getAllLists, getArchivedLists, createList, deleteList, getList, toggleArchive } from "../services/list.service";
+import { getAllLists, getArchivedLists, createList, deleteList, getList, toggleArchive } from "../services/listOverview.service";
 
 export function useListOverviewData(userId, showArchived) {
   const fetchListOverviewData = async () => {

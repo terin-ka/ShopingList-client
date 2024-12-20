@@ -1,21 +1,23 @@
 import { useContext, useState } from "react";
-import { ListDetailContext } from "../../contexts/listDetail.provider";
 import { ListOverviewContext } from "../../contexts/listOverview.provider";
-import { UserContext } from "../../contexts/userProviderSimple";
+import { UserContext } from "../../contexts/userProvider";
 import { Stack, IconButton, Typography, Tooltip } from "@mui/material";
 import { Button, TextField, DialogActions, DialogContent, DialogTitle, Dialog} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
+import { useUpdateListName } from "../../hooks/listDeatil.hooks";
 
 export default function ListName() {
-  const { handlerMap } = useContext(ListDetailContext);
   const { listDetailData } = useContext(ListOverviewContext);
   const { loggedInUser } = useContext(UserContext);
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState(listDetailData.listName);
+
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
-  const [open, setOpen] = useState(false);
-  const [name, setName] = useState(listDetailData.name);
+
+  const { mutate: updateListName, isPending } = useUpdateListName();
 
   const handleClose = () => {
     setOpen(false);
@@ -23,7 +25,7 @@ export default function ListName() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    handlerMap.handleRename({name: name}); 
+    updateListName({ userId: loggedInUser?._id, listId: listDetailData?._id, listName: name }); 
     handleClose();
   };
 
@@ -56,7 +58,7 @@ export default function ListName() {
           <Button onClick={handleClose} color="secondary">
             Close
           </Button>
-          <Button type="submit" color="primary">
+          <Button type="submit" color="primary" disabled={isPending}>
             Save Changes
           </Button>
         </DialogActions>

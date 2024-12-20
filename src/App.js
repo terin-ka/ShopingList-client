@@ -2,8 +2,7 @@ import React from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Test from "./pages/test.page";
-import ListDetailProvider from "./contexts/listDetail.provider";
-import UserProviderSimple from "./contexts/userProviderSimple";
+import UserProvider from "./contexts/userProvider";
 import ListOverwievProvider from "./contexts/listOverview.provider";
 import CustomThemeProvider from "./contexts/themeProvider";
 import Header from "./components/Header";
@@ -16,9 +15,8 @@ export default function App() {
       {" "}
       <BrowserRouter>
         <CustomThemeProvider>
-          <UserProviderSimple>
+          <UserProvider>
             <ListOverwievProvider>
-              <ListDetailProvider>
                 <Header />
                 <Routes>
                   <Route path="/" element={<Test />} />
@@ -26,9 +24,8 @@ export default function App() {
                   <Route path="listDetail/:listId" element={<ListDetail />} />
                   <Route path="/test" element={<Test />} />
                 </Routes>
-              </ListDetailProvider>
             </ListOverwievProvider>
-          </UserProviderSimple>
+          </UserProvider>
         </CustomThemeProvider>
       </BrowserRouter>
     </Container>

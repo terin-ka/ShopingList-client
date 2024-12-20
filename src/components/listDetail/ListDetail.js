@@ -1,8 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useContext, useEffect } from "react";
-import { UserContext } from "../../contexts/userProviderSimple";
+import { UserContext } from "../../contexts/userProvider";
 import { ListOverviewContext } from "../../contexts/listOverview.provider";
-import ItemList from "./ItemList";
 import MemberList from "./MemberList";
 import Toolbar from "./Toolbar";
 import ListName from "./ListName";
@@ -17,8 +16,8 @@ export default function ListDetail() {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
   const { listId } = useParams();
   const { loggedInUser } = useContext(UserContext);
-  const { setActiveDetail, listDetailData, DetailIsLoading, DetailIsError } = useContext(ListOverviewContext);
-  
+  const { setActiveDetail, listDetailData, DetailIsLoading, DetailIsError, showUnresolvedItems } = useContext(ListOverviewContext);
+
   useEffect(() => {
     if (listId) {
       localStorage.setItem("activeDetail", listId);
@@ -61,13 +60,14 @@ export default function ListDetail() {
       <ListName />
       <Toolbar />
       <List style={{ width: "100%", marginTop:"0" }}>
-        {listDetailData.itemList.map((item) => (
+      {listDetailData.itemList
+        .filter((item) => !showUnresolvedItems || !item.resolved) // Filtr položek
+        .map((item) => (
           <Item key={item.itemId} item={item}></Item>
-        ))}
+      ))}
       </List>
       {isSmallScreen && <TemporaryDrawer />}
       </Stack>
-      {/*<ItemList />*/}
     </Stack>
   );
 }

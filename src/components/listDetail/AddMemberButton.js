@@ -1,5 +1,4 @@
-import { UserContext } from "../../contexts/userProviderSimple";
-import { ListDetailContext } from "../../contexts/listDetail.provider";
+import { UserContext } from "../../contexts/userProvider";
 import { ListOverviewContext } from "../../contexts/listOverview.provider";
 import { useState, useContext } from "react";
 import { useAddMember } from "../../hooks/listDeatil.hooks";
@@ -16,7 +15,6 @@ import {
 } from "@mui/material";
 
 export default function AddMemberButton() {
-  const { handlerMap } = useContext(ListDetailContext);
   const { listDetailData } = useContext(ListOverviewContext);
   const { userList, loggedInUser } = useContext(UserContext);
   const [memberId, setMemberId] = useState("");
@@ -27,6 +25,10 @@ export default function AddMemberButton() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
   };
 
   const handleSubmit = (e) => {
@@ -72,7 +74,7 @@ export default function AddMemberButton() {
         </DialogActions>
       </Dialog>
       <Stack spacing={2} direction="row">
-        <Button variant="outlined" onClick={() => setOpen(true)}>
+        <Button variant="outlined" onClick={handleOpen}>
           Add Member
           <AddIcon />
         </Button>

@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { UserContext } from "../../contexts/userProviderSimple";
+import { UserContext } from "../../contexts/userProvider";
 import { useToggleArchive } from "../../hooks/listOverview.hooks";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
