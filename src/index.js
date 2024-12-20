@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "bootstrap/dist/css/bootstrap.min.css";
+import 'react-toastify/dist/ReactToastify.css';
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
@@ -8,19 +9,13 @@ import { QueryClient, QueryClientProvider, QueryCache } from "@tanstack/react-qu
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { toast } from "react-toastify";
 
-// globální onError callback
-// https://tkdodo.eu/blog/react-query-error-handling#the-global-callbacks
 const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60 * 5, // 5 minut pro "stale" data
-      cacheTime: 1000 * 60 * 10, // 10 minut po uložení v cache
-      refetchOnWindowFocus: false, // Zabránění refetch při znovu zaměření okna
-      onError: (error) => {
-        toast.error(`Error: ${error.message}`); // Globální chybový toast
-      },
+  queryCache: new QueryCache({
+    onError: (error) => {
+      toast.error(error.message);
+      console.error(error);
     },
-  },
+  }),
 });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

@@ -1,5 +1,6 @@
 import React from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
 import Container from "react-bootstrap/Container";
 import Test from "./pages/test.page";
 import UserProvider from "./contexts/userProvider";
@@ -28,6 +29,7 @@ export default function App() {
           </UserProvider>
         </CustomThemeProvider>
       </BrowserRouter>
+      <ToastContainer position="top-right" autoClose={5000} />
     </Container>
   );
 }
