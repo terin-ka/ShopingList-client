@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { UserContext } from "../../contexts/userProvider";
+import { ListOverviewContext } from "../../contexts/listOverview.provider";
 import ArchiveButton from "./ArchiveButton";
 import DeleteListButton from "./DeleteListButton";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
@@ -36,7 +37,7 @@ export default function ShoppingList({ list }) {
         minHeight: "280px",
       }}
     >
-      <CardHeader avatar={<Avatar />} title={ownerName} />
+      <CardHeader avatar={<Avatar />} title={ownerName} subheader={`počet položek: ${list.itemCount}`}/>
       <CardContent>
         <Typography
           variant="h4"
@@ -56,7 +57,7 @@ export default function ShoppingList({ list }) {
         ))}
         {list.itemList.length > maxVisibleItems && (
           <Typography variant="body1" color="text.secondary">
-            {t('overview.')}
+            {t('overview.more')}
           </Typography>
         )}
       </CardContent>

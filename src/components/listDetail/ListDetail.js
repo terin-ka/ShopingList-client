@@ -2,14 +2,13 @@ import { useParams } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../../contexts/userProvider";
 import { ListOverviewContext } from "../../contexts/listOverview.provider";
+import { useTheme } from "@mui/material/styles";
 import MemberList from "./MemberList";
 import Toolbar from "./Toolbar";
 import ListName from "./ListName";
 import Item from "./Item";
-import { Stack, CircularProgress, Typography, List } from "@mui/material";
-import TemporaryDrawer from "./TemporaryDrawer";
+import { Stack, CircularProgress, List } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme } from "@mui/material/styles";
 
 export default function ListDetail() {
   const theme = useTheme();
@@ -63,7 +62,6 @@ export default function ListDetail() {
           <Item key={item.itemId} item={item}></Item>
       ))}
       </List>
-      {isSmallScreen && <TemporaryDrawer />}
       </Stack>
     </Stack>
   );

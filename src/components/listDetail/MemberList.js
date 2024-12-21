@@ -7,6 +7,7 @@ import { useLeaveList } from "../../hooks/listDeatil.hooks";
 import { Stack, List, Button, ListItem, Typography, IconButton, Tooltip, Dialog, DialogActions, DialogTitle } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import LogoutIcon from '@mui/icons-material/Logout';
+import PieChart from "./Chart";
 import AddMemberButton from "./AddMemberButton";
 import { useTranslation } from 'react-i18next';
 
@@ -37,10 +38,10 @@ export default function MemberList() {
     <Stack
       spacing={2}
       direction="column"
-      style={{
+      style ={{
         margin: "40px 0px 0px 0px",
         padding: "0px 20px 0px 20px",
-        borderRight: "2px solid #56949F",
+        borderRight: "2px solid",
       }}
     >
       <Typography variant="h3">{t('memberList.owner')}</Typography>
@@ -102,7 +103,7 @@ export default function MemberList() {
       {loggedInUser?._id === listDetailData.owner ? <AddMemberButton /> : ""}
 
       {listDetailData.memberList.includes(loggedInUser?._id) ? (
-        <Stack spacing={2} direction="row">
+      <Stack spacing={2} direction="row">
         <Button variant="outlined" onClick={handleOpen}>
         {t('memberList.leaveList')}
           <LogoutIcon fontSize="medium" style={{paddingLeft: "4px"}}/>
@@ -127,6 +128,7 @@ export default function MemberList() {
           </Dialog>
       </Stack>
       ) : ("")}
+      <PieChart/>
     </Stack>
   );
 }

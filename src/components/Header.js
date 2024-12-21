@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useContext } from "react";
 import { UserContext } from "../contexts/userProvider";
+import { ThemeContext } from "../contexts/themeProvider";
 import { useNavigate } from "react-router-dom";
 import {
   Stack,
@@ -17,17 +18,24 @@ import {
   MenuList,
   CircularProgress,
 } from "@mui/material";
+import TemporaryDrawer from "../components/listDetail/TemporaryDrawer"
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 import LocalFloristIcon from "@mui/icons-material/LocalFlorist";
 import LanguageIcon from '@mui/icons-material/Language';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
 import i18n from "../i18n";
-import { ListOverviewContext } from '../contexts/listOverview.provider';
 
 export default function Header() {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
   const { userList, loggedInUser, setLoggedInUser , isLoading } = useContext(UserContext);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState(i18n.language)
   const anchorRef = useRef(null);
+  const { isDarkMode, toggleTheme } = useContext(ThemeContext);
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng); // Změna jazyka
@@ -94,16 +102,21 @@ export default function Header() {
             >
               ShopList
             </Typography>
+            {isSmallScreen && <TemporaryDrawer />}
           </Stack>
           <Stack direction="row">
-            <Button
 
+            <Button onClick={toggleTheme}>
+                {isDarkMode? <DarkModeIcon/> : <LightModeIcon color="secondary" />}
+            </Button>
+
+            <Button
               color="inherit"
               aria-label="change language"
               sx={{ ml: "auto", mr: 2 }}
               onClick={() => changeLanguage(currentLanguage === "en" ? "cs" : "en")} // Přepnutí mezi 'en' a 'cs'
             >
-              <Typography>{currentLanguage.toUpperCase()}</Typography>
+              <Typography>{currentLanguage}</Typography>
               <LanguageIcon />
             </Button>
 

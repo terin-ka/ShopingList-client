@@ -15,7 +15,7 @@ const resources = {
         deleteTooltip: "Delete",
         archiveTooltip: "Archive",
         detailTooltip: "Show list detail",
-        more: "more",
+        more: "...more",
       },
       detail: {
         all: "All items",
@@ -55,7 +55,7 @@ const resources = {
         deleteTooltip: "Odstranit",
         archiveTooltip: "Archivovat",
         detailTooltip: "Zobrazit detail listu",
-        more: "Více"
+        more: "...více"
       },
       detail: {
         all: "Všechny položky",

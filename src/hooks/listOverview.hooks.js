@@ -7,7 +7,13 @@ export function useListOverviewData(userId, showArchived) {
       return await getArchivedLists(userId);
     }
     const row = await getAllLists(userId);
-    return row;
+
+    // Sečítání počtu položek pro každý seznam a přidání 'itemCount' do seznamu
+    const updatedRow = row.map(list => {
+      const itemCount = list.itemList.length
+      return { ...list, itemCount };  // Přidání itemCount do objektu listu
+    });
+    return updatedRow;
   };
 
   return useQuery({

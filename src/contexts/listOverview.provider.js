@@ -10,9 +10,26 @@ function ListOverviewProvider({ children }) {
   const [showArchived, setShowArchived] = useState(false);
   const [activeDetail, setActiveDetail] = useState(localStorage.getItem("activeDetail"));
   const [showUnresolvedItems, setShowUnresolvedItems] = useState(false);
+  const [itemCount, setItemCount] = useState(0);
+  const [completedItemCount, setCompletedItemCount] = useState(0);
 
   const { data: listOverviewData, isLoading, isError } = useListOverviewData(loggedInUser?._id, showArchived);
   const { data: listDetailData, isLoading: DetailIsLoading, isError: DetailIsError } = useListData(loggedInUser?._id, activeDetail)
+
+  // Funkce pro přepočítání počtu úkolů
+  const calculateTaskCounts = () => {
+    if (!listDetailData || !listDetailData.itemList) return { itemCount: 0, completedItemCount: 0 };
+
+    const total = listDetailData.itemList.length;
+    const completed = listDetailData.itemList.filter(item => item.resolved).length;
+    
+    setItemCount(total);
+    setCompletedItemCount(completed);
+  };
+
+  useEffect(() => {
+    calculateTaskCounts();
+  }, [listDetailData]); 
 
   const value = {
     overviewData: listOverviewData,
@@ -27,6 +44,9 @@ function ListOverviewProvider({ children }) {
     toggleShowArchived: () => setShowArchived((current) => !current),
     showUnresolvedItems,
     setShowUnresolvedItems,
+    itemCount,
+    completedItemCount,
+
   };
 
   return (
