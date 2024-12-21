@@ -1,20 +1,21 @@
 import { ListOverviewContext } from "../../contexts/listOverview.provider";
 import { UserContext } from "../../contexts/userProvider";
 import { useContext } from "react";
-import { Stack, Grid2, Typography, Button } from "@mui/material";
+import { Stack, Grid2, Typography, CircularProgress } from "@mui/material";
 import OverviewToolbar from "./OverviewToolbar";
 import ShoppingList from "./ShoppingList";
+import { useTranslation } from 'react-i18next';
 
 export default function Overview() {
-  const { overviewData, isLoading, isError } = useContext(ListOverviewContext);
+  const { t } = useTranslation();
+  const { overviewData, isLoading } = useContext(ListOverviewContext);
   const { loggedInUser } = useContext(UserContext);
 
-  if (isLoading) return <p>Loading...</p>;
-  if (isError) return <p>Error loading lists.</p>;
+  if (isLoading) return <CircularProgress />;;
 
   if (!loggedInUser || !overviewData)
     return <Grid2 container justifyContent="center">
-      <Typography variant="h2">Nejprve se prosím přihlaste</Typography>
+      <Typography variant="h2">{t('overview.login')}</Typography>
     </Grid2>;
 
   return (

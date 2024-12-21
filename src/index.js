@@ -8,6 +8,8 @@ import reportWebVitals from "./reportWebVitals";
 import { QueryClient, QueryClientProvider, QueryCache } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { toast } from "react-toastify";
+import './i18n'; // Import souboru, kde je inicializace i18n
+
 
 const queryClient = new QueryClient({
   queryCache: new QueryCache({

@@ -8,8 +8,10 @@ import { Stack, List, Button, ListItem, Typography, IconButton, Tooltip, Dialog,
 import DeleteIcon from "@mui/icons-material/Delete";
 import LogoutIcon from '@mui/icons-material/Logout';
 import AddMemberButton from "./AddMemberButton";
+import { useTranslation } from 'react-i18next';
 
 export default function MemberList() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { listDetailData } = useContext(ListOverviewContext);
   const { userList, loggedInUser } = useContext(UserContext);
@@ -41,11 +43,11 @@ export default function MemberList() {
         borderRight: "2px solid #56949F",
       }}
     >
-      <Typography variant="h3">List Owner</Typography>
+      <Typography variant="h3">{t('memberList.owner')}</Typography>
       <ListItem>
         <Typography variant="body1">{owner.name}</Typography>
       </ListItem>
-      <Typography variant="h3">List Members</Typography>
+      <Typography variant="h3">{t('memberList.members')}</Typography>
       <List>
         {listDetailData.memberList.map((memberId) => {
           const member = userList.find((user) => user._id === memberId);
@@ -64,7 +66,7 @@ export default function MemberList() {
               </Typography>
               {loggedInUser?._id === listDetailData.owner ? (
                     <>
-                    <Tooltip title="Delete">
+                    <Tooltip title={t('detail.deleteTooltip')}>
                       <IconButton
                         color="primary"
                         onClick={handleOpen}
@@ -73,10 +75,10 @@ export default function MemberList() {
                       </IconButton>
                     </Tooltip>
                     <Dialog open={open} onClose={handleClose}>
-                      <DialogTitle>Opravdu chcete odstranit tohoto člena?</DialogTitle>
+                      <DialogTitle>{t('memberList.deleteQuestion')}</DialogTitle>
                       <DialogActions>
                         <Button color="secondary" onClick={handleClose}>
-                          Storno
+                        {t('dialog.cancel')}
                         </Button>
                         <Button
                           color="primary"
@@ -86,14 +88,12 @@ export default function MemberList() {
                           }}
                           disabled={deletememberPending }
                         >
-                          Ano
+                          {t('dialog.confirm')}
                         </Button>
                       </DialogActions>
                     </Dialog>
                   </>
-              ) : (
-                ""
-              )}
+              ) : ("")}
             </ListItem>
           );
         })}
@@ -104,14 +104,14 @@ export default function MemberList() {
       {listDetailData.memberList.includes(loggedInUser?._id) ? (
         <Stack spacing={2} direction="row">
         <Button variant="outlined" onClick={handleOpen}>
-          Leave
+        {t('memberList.leaveList')}
           <LogoutIcon fontSize="medium" style={{paddingLeft: "4px"}}/>
         </Button>
         <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>Opravdu chcete odejít z tohoto listu?</DialogTitle>
+          <DialogTitle>{t('memberList.leaveQuestion')}</DialogTitle>
           <DialogActions>
             <Button color="secondary" onClick={handleClose}>
-              Storno
+              {t('dialog.cancel')}
             </Button>
             <Button
               color="primary"
@@ -121,14 +121,12 @@ export default function MemberList() {
               }}
               disabled={leaveListPending}
             >
-              Potvrdit
+              {t('dialog.confirm')}
             </Button>
           </DialogActions>
           </Dialog>
       </Stack>
-      ) : (
-        ""
-      )}
+      ) : ("")}
     </Stack>
   );
 }

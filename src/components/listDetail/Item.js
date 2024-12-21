@@ -5,8 +5,10 @@ import { ListItem, Stack, Typography, Dialog, DialogTitle, DialogActions, Button
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDeleteItem } from "../../hooks/listDeatil.hooks";
 import CheckButton from "./CheckButton";
+import { useTranslation } from 'react-i18next';
 
 export default function Item({ item }) {
+  const { t } = useTranslation();
   const { listDetailData } = useContext(ListOverviewContext);
   const { loggedInUser } = useContext(UserContext);
   const [open, setOpen] = useState(false);
@@ -45,7 +47,7 @@ export default function Item({ item }) {
         </Typography>
         <CheckButton itemId={item.itemId} />
         <>
-          <Tooltip title="Delete">
+          <Tooltip title={t('detail.deleteTooltip')} placement="right">
             <IconButton
               color="primary"
               onClick={handleOpen}

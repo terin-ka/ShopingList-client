@@ -2,8 +2,10 @@ import { useState } from "react";
 import MemberList from "./MemberList";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Stack, Drawer, Button, Typography } from "@mui/material";
+import { useTranslation } from 'react-i18next';
 
 export default function TemporaryDrawer() {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
 
   const toggleDrawer = (newOpen) => () => {

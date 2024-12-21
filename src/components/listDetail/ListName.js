@@ -7,13 +7,14 @@ import EditIcon from "@mui/icons-material/Edit";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { useUpdateListName } from "../../hooks/listDeatil.hooks";
+import { useTranslation } from 'react-i18next';
 
 export default function ListName() {
+  const { t } = useTranslation();
   const { listDetailData } = useContext(ListOverviewContext);
   const { loggedInUser } = useContext(UserContext);
   const [open, setOpen] = useState(false);
   const [name, setName] = useState(listDetailData.listName);
-
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -21,6 +22,10 @@ export default function ListName() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
   };
 
   const handleSubmit = (e) => {
@@ -31,6 +36,14 @@ export default function ListName() {
 
   return (
     <Stack spacing={2} direction="row">
+      <Typography variant={isSmallScreen ? "h2" : "h1"}>{listDetailData.listName}</Typography>
+      {loggedInUser?._id === listDetailData.owner ? (
+        <Tooltip title={t('detail.renameTooltip')} placement="right">
+          <IconButton color="primary" onClick={handleOpen}>
+            <EditIcon fontSize="large" />
+          </IconButton>
+        </Tooltip>
+      ) : ("")}
       <Dialog
         open={open}
         onClose={handleClose}
@@ -40,13 +53,13 @@ export default function ListName() {
           sx:{ width: "50%"},
         }}
       >
-        <DialogTitle>Update Name</DialogTitle>
+        <DialogTitle>{t('detail.updateDialogName')}</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             required
             margin="dense"
-            label="Name"
+            label={t('dialog.name')}
             type="text"
             fullWidth
             variant="outlined"
@@ -56,24 +69,13 @@ export default function ListName() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="secondary">
-            Close
+            {t('dialog.cancel')}
           </Button>
           <Button type="submit" color="primary" disabled={isPending}>
-            Save Changes
+            {t('dialog.confirm')}
           </Button>
         </DialogActions>
-    </Dialog>
-      <Typography variant={isSmallScreen ? "h2" : "h1"}>{listDetailData.listName}</Typography>
-
-      {loggedInUser?._id === listDetailData.owner ? (
-        <Tooltip title="Rename" placement="right">
-          <IconButton color="primary" onClick={() => setOpen(true)}>
-            <EditIcon fontSize="large" />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        ""
-      )}
+      </Dialog>
     </Stack>
   );
 }

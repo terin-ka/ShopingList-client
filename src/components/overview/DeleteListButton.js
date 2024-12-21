@@ -10,8 +10,10 @@ import {
   DialogTitle,
   Button,
 } from "@mui/material";
+import { useTranslation } from 'react-i18next';
 
 export default function DeleteListButton({ listId }) {
+  const { t } = useTranslation();
   const { loggedInUser } = useContext(UserContext);
   const [open, setOpen] = useState(false);
 
@@ -37,7 +39,7 @@ export default function DeleteListButton({ listId }) {
 
   return (
     <>
-      <Tooltip title="Delete">
+      <Tooltip title={t('overview.deleteTooltip')}>
         <IconButton
           color="primary"
           onClick={() => {
@@ -58,9 +60,9 @@ export default function DeleteListButton({ listId }) {
         <DialogTitle>Opravdu chcete odstranit tento nákupní list?</DialogTitle>
         <DialogActions>
           <Button onClick={handleClose} color="secondary" disabled={isPending}>
-            Cancel
+          {t('dialog.cancel')}
           </Button>
-          <Button type="submit" disabled={isPending}>Confirm</Button>
+          <Button type="submit" disabled={isPending}>{t('dialog.confirm')}</Button>
         </DialogActions>
       </Dialog>
     </>

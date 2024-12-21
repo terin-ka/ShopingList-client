@@ -11,8 +11,10 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
+import { useTranslation } from 'react-i18next';
 
 export default function AddListButton() {
+  const { t } = useTranslation();
   const { loggedInUser } = useContext(UserContext);
   const [open, setOpen] = useState(false);
   const [listName, setListName] = useState("");
@@ -41,7 +43,7 @@ export default function AddListButton() {
   return (
     <Stack spacing={2} direction="row">
       <Button variant="outlined" onClick={handleClickOpen}>
-        Add List
+        {t('overview.addList')}
         <AddIcon />
       </Button>
       <Dialog
@@ -52,13 +54,13 @@ export default function AddListButton() {
           onSubmit: handleSubmit,
         }}
       >
-        <DialogTitle>New Shopping List</DialogTitle>
+        <DialogTitle>{t('overview.addList')}</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             required
             margin="dense"
-            label="Name"
+            label={t('dialog.name')}
             type="text"
             fullWidth
             variant="outlined"
@@ -68,9 +70,9 @@ export default function AddListButton() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="secondary" disabled={isPending}>
-            Cancel
+          {t('dialog.cancel')}
           </Button>
-          <Button type="submit" disabled={isPending}>Confirm</Button>
+          <Button type="submit" disabled={isPending}>{t('dialog.confirm')}</Button>
         </DialogActions>
       </Dialog>
     </Stack>

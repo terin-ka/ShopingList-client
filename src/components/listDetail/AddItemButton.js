@@ -12,8 +12,10 @@ import {
   DialogActions,
   TextField,
 } from "@mui/material";
+import { useTranslation } from 'react-i18next';
 
 export default function AddItemButton() {
+  const { t } = useTranslation();
   const { listDetailData } = useContext(ListOverviewContext);
   const { loggedInUser } = useContext(UserContext);
   const [open, setOpen] = useState(false);
@@ -45,6 +47,12 @@ export default function AddItemButton() {
 
   return (
     <>
+      <Stack spacing={2} direction="row">
+        <Button variant="outlined" onClick={handleOpen}>
+          {t('detail.addItem')}
+          <AddIcon />
+        </Button>
+      </Stack>
       <Dialog
         open={open}
         onClose={handleClose}
@@ -54,13 +62,13 @@ export default function AddItemButton() {
           sx: { width: "50%" },
         }}
       >
-        <DialogTitle>Create New Item</DialogTitle>
+        <DialogTitle>{t('detail.addItem')}</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             required
             margin="dense"
-            label="Name"
+            label={t('dialog.name')}
             type="text"
             fullWidth
             variant="outlined"
@@ -69,30 +77,24 @@ export default function AddItemButton() {
           />
           <TextField
             margin="dense"
-            label="Count"
+            label={t('dialog.count')}
             type="number"
             fullWidth
             variant="outlined"
             value={count}
             onChange={(e) => setCount(e.target.value)}
-            helperText="Leave blank to default to 1"
+            helperText={t('detail.dialogHelperText')}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="secondary">
-            Close
+            {t('dialog.cancel')}
           </Button>
-          <Button type="submit" color="primary">
-            Save Changes
+          <Button type="submit" color="primary" disabled={isPending}>
+            {t('dialog.confirm')}
           </Button>
         </DialogActions>
       </Dialog>
-      <Stack spacing={2} direction="row">
-        <Button variant="outlined" onClick={handleOpen}>
-          Add Item
-          <AddIcon />
-        </Button>
-      </Stack>
     </>
   );
 }

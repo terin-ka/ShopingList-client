@@ -14,8 +14,10 @@ import {
   IconButton,
   Tooltip,
 } from "@mui/material";
+import { useTranslation } from 'react-i18next';
 
 export default function ShoppingList({ list }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { userList, loggedInUser } = useContext(UserContext);
   const maxVisibleItems = 3;
@@ -54,7 +56,7 @@ export default function ShoppingList({ list }) {
         ))}
         {list.itemList.length > maxVisibleItems && (
           <Typography variant="body1" color="text.secondary">
-            ...další
+            {t('overview.')}
           </Typography>
         )}
       </CardContent>
@@ -66,7 +68,7 @@ export default function ShoppingList({ list }) {
           <DeleteListButton
             listId={list._id}
           />
-          <Tooltip title="Show list detail">
+          <Tooltip title={t('overview.detailTooltip')}>
             <IconButton color="primary" onClick={handleNavigateToDetail}>
               <VisibilityOutlinedIcon />
             </IconButton>
@@ -76,7 +78,7 @@ export default function ShoppingList({ list }) {
         <CardActions
           sx={{ position: "absolute", bottom: 0, left: 0, right: 0 }}
         >
-          <Tooltip title="show list detail">
+          <Tooltip title={t('overview.detailTooltip')}>
             <IconButton color="primary" onClick={handleNavigateToDetail}>
               <VisibilityOutlinedIcon />
             </IconButton>

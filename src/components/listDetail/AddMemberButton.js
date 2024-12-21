@@ -13,8 +13,10 @@ import {
   TextField,
   Autocomplete,
 } from "@mui/material";
+import { useTranslation } from 'react-i18next';
 
 export default function AddMemberButton() {
+  const { t } = useTranslation();
   const { listDetailData } = useContext(ListOverviewContext);
   const { userList, loggedInUser } = useContext(UserContext);
   const [memberId, setMemberId] = useState("");
@@ -41,6 +43,12 @@ export default function AddMemberButton() {
 
   return (
     <>
+      <Stack spacing={2} direction="row">
+        <Button variant="outlined" onClick={handleOpen}>
+        {t('memberList.addMember')}
+          <AddIcon />
+        </Button>
+      </Stack>
       <Dialog
         open={open}
         onClose={handleClose}
@@ -50,7 +58,7 @@ export default function AddMemberButton() {
           sx: { width: "50%" },
         }}
       >
-        <DialogTitle>Add Member</DialogTitle>
+        <DialogTitle>{t('memberList.addMember')}</DialogTitle>
         <DialogContent sx={{ pt: 4 }}>
           <Autocomplete
             sx={{ mt: 2 }}
@@ -61,24 +69,18 @@ export default function AddMemberButton() {
             onChange={(event, newValue) => {
               setMemberId(newValue ? newValue._id : "");
             }}
-            renderInput={(params) => <TextField {...params} label="User" />}
+            renderInput={(params) => <TextField {...params} label={t('dialog.user')} />}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="secondary">
-            Close
+            {t('dialog.cancel')}
           </Button>
           <Button type="submit" color="primary" disabled={!memberId || isPending}>
-            Save Changes
+            {t('dialog.confirm')}
           </Button>
         </DialogActions>
       </Dialog>
-      <Stack spacing={2} direction="row">
-        <Button variant="outlined" onClick={handleOpen}>
-          Add Member
-          <AddIcon />
-        </Button>
-      </Stack>
     </>
   );
 }

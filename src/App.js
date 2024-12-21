@@ -29,7 +29,7 @@ export default function App() {
           </UserProvider>
         </CustomThemeProvider>
       </BrowserRouter>
-      <ToastContainer position="top-right" autoClose={5000} />
+      <ToastContainer position="bottom-right" autoClose={5000} />
     </Container>
   );
 }

@@ -16,7 +16,7 @@ export default function ListDetail() {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
   const { listId } = useParams();
   const { loggedInUser } = useContext(UserContext);
-  const { setActiveDetail, listDetailData, DetailIsLoading, DetailIsError, showUnresolvedItems } = useContext(ListOverviewContext);
+  const { setActiveDetail, listDetailData, DetailIsLoading, showUnresolvedItems } = useContext(ListOverviewContext);
 
   useEffect(() => {
     if (listId) {
@@ -27,9 +27,6 @@ export default function ListDetail() {
 
   if (DetailIsLoading) {
     return <CircularProgress />;
-  }
-  if (DetailIsError) {
-    return <Typography color="error">Chyba při načítání seznamu.</Typography>;
   }
 
   const isMember =
