@@ -4,7 +4,7 @@ import { ListOverviewContext } from "../../contexts/listOverview.provider";
 import { UserContext } from "../../contexts/userProvider";
 import { useDeleteMember } from "../../hooks/listDeatil.hooks";
 import { useLeaveList } from "../../hooks/listDeatil.hooks";
-import { Stack, List, Button, ListItem, Typography, IconButton, Tooltip, Dialog, DialogActions, DialogTitle } from "@mui/material";
+import { Stack, List, Button, ListItem, Typography, IconButton, Tooltip, Dialog, DialogActions, DialogTitle, CircularProgress } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import LogoutIcon from '@mui/icons-material/Logout';
 import PieChart from "./Chart";
@@ -16,7 +16,8 @@ export default function MemberList() {
   const navigate = useNavigate();
   const { listDetailData } = useContext(ListOverviewContext);
   const { userList, loggedInUser } = useContext(UserContext);
-  const owner = userList.find((user) => user._id === listDetailData.owner);
+  const [ owner, setOwner ] = useState(userList ? userList.find((user) => user._id === listDetailData.owner): false);
+  userList.find((user) => user._id === listDetailData.owner);
   const [open, setOpen] = useState(false);
 
   const { mutate: deleteMember, isPending: deletememberPending } = useDeleteMember();
@@ -46,11 +47,11 @@ export default function MemberList() {
     >
       <Typography variant="h3">{t('memberList.owner')}</Typography>
       <ListItem>
-        <Typography variant="body1">{owner.name}</Typography>
+        <Typography variant="body1">{owner?.name}</Typography>
       </ListItem>
       <Typography variant="h3">{t('memberList.members')}</Typography>
       <List>
-        {listDetailData.memberList.map((memberId) => {
+        {listDetailData.memberList ? (listDetailData.memberList.map((memberId) => {
           const member = userList.find((user) => user._id === memberId);
 
           return (
@@ -97,12 +98,12 @@ export default function MemberList() {
               ) : ("")}
             </ListItem>
           );
-        })}
+        })) : <CircularProgress/> }
       </List>
 
-      {loggedInUser?._id === listDetailData.owner ? <AddMemberButton /> : ""}
+      {listDetailData ? (loggedInUser?._id === listDetailData?.owner ? <AddMemberButton /> : "") : <CircularProgress/>}
 
-      {listDetailData.memberList.includes(loggedInUser?._id) ? (
+      {listDetailData.memberList ? (listDetailData.memberList.includes(loggedInUser?._id) ? (
       <Stack spacing={2} direction="row">
         <Button variant="outlined" onClick={handleOpen}>
         {t('memberList.leaveList')}
@@ -127,7 +128,7 @@ export default function MemberList() {
           </DialogActions>
           </Dialog>
       </Stack>
-      ) : ("")}
+      ) : ("")) : <CircularProgress/>}
       <PieChart/>
     </Stack>
   );

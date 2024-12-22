@@ -167,6 +167,7 @@ export default function Header() {
                               localStorage.setItem("loggedInUser", JSON.stringify({ _id: user._id, name: user.name }));
                               setLoggedInUser({ _id: user?._id, name: user?.name });
                               handleClose(event);
+                              navigate(`/overview`);
                             }}
                           >
                             {user.name}

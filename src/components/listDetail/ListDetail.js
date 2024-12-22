@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../contexts/userProvider";
 import { ListOverviewContext } from "../../contexts/listOverview.provider";
 import { useTheme } from "@mui/material/styles";
@@ -16,21 +16,25 @@ export default function ListDetail() {
   const { listId } = useParams();
   const { loggedInUser } = useContext(UserContext);
   const { setActiveDetail, listDetailData, DetailIsLoading, showUnresolvedItems } = useContext(ListOverviewContext);
+  const [isMember, setIsMember] = useState(false);
 
   useEffect(() => {
     if (listId) {
       localStorage.setItem("activeDetail", listId);
       setActiveDetail(listId);
     }
-  }, [listId, setActiveDetail]);
+  
+    if (listDetailData?.memberList && Array.isArray(listDetailData.memberList)) {
+      const isCurrentMember =
+        listDetailData.memberList.includes(loggedInUser?._id) || 
+        loggedInUser?._id === listDetailData?.owner;
+      setIsMember(isCurrentMember);
+    }
+  }, [listId, setActiveDetail, listDetailData, loggedInUser]);
 
   if (DetailIsLoading) {
     return <CircularProgress />;
   }
-
-  const isMember =
-    listDetailData.memberList.includes(loggedInUser?._id) ||
-    loggedInUser?._id === listDetailData.owner;
 
   return (
     <Stack
@@ -56,11 +60,11 @@ export default function ListDetail() {
       <ListName />
       <Toolbar />
       <List style={{ width: "100%", marginTop:"0" }}>
-      {listDetailData.itemList
+      { listDetailData.itemList ? (listDetailData.itemList
         .filter((item) => !showUnresolvedItems || !item.resolved) // Filtr položek
         .map((item) => (
           <Item key={item.itemId} item={item}></Item>
-      ))}
+      ))) : <CircularProgress/> }
       </List>
       </Stack>
     </Stack>
